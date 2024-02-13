@@ -37,9 +37,10 @@ For more info:
 - https://rtic.rs/2/book/en/
 
 ### Running (new stack)
-The new stack is posed to run with just a cargo run. In case of doubt or error,
-take a look at the runner at the .cargo/config.toml and at the probe-rs docs at
-https://probe.rs/docs/tools/probe-rs/
+The new stack is posed to run with just a cargo run. To run with all the levels
+of logging, set the env variable DEFMT_LOG=debug before using cargo run.In case
+of doubt or error, take a look at the runner at the .cargo/config.toml and at
+the probe-rs docs at https://probe.rs/docs/tools/probe-rs/.
 On the date of instalation the version of probe-rs is 0.22.0, so it is somewhat
 expected to have some breaking changes in the future. If all goes bad, we can
 always go back to the old stack. In that case take a look at older versions of
