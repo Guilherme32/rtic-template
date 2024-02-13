@@ -46,6 +46,10 @@ always go back to the old stack. In that case take a look at older versions of
 the template since the config and main/examples have been changed to work with
 the new one.
 
+\*\* Cargo embed debug will start communicating and will also open a server
+with the gdb interface at :1337, so we can still use pure gdb to debug from the
+cli or from an external program.
+
 ### Running (old stack, not sure if will still work)
 
 - Run ```openocd``` on a terminal window at the root folder of the project.
