@@ -22,10 +22,11 @@ using rustup:
 ```cargo install cargo-generate```
 ```rustup target add thumbv7em-none-eabihf```
 ```cargo install cargo-binutils```
+```cargo install probe-rs --features cli --locked```
 
-These other ones depend on the OS, but install also:
-- gdb (multiarch)
-- openocd
+These other ones depend on the OS, but could be nice to install also:
+- gdb (multiarch) (old chain)
+- openocd         (old chain)
 - qemu-system-arm (if you want to do some simulations)
 
 For fedora:
@@ -35,7 +36,17 @@ For more info:
 - https://docs.rust-embedded.org/book/intro/index.html
 - https://rtic.rs/2/book/en/
 
-### Running
+### Running (new stack)
+The new stack is posed to run with just a cargo run. In case of doubt or error,
+take a look at the runner at the .cargo/config.toml and at the probe-rs docs at
+https://probe.rs/docs/tools/probe-rs/
+On the date of instalation the version of probe-rs is 0.22.0, so it is somewhat
+expected to have some breaking changes in the future. If all goes bad, we can
+always go back to the old stack. In that case take a look at older versions of
+the template since the config and main/examples have been changed to work with
+the new one.
+
+### Running (old stack, not sure if will still work)
 
 - Run ```openocd``` on a terminal window at the root folder of the project.
 - Build the binary with ```cargo build```
@@ -48,3 +59,4 @@ name on your installation, this was for fedora linux)
 
 Look at https://docs.rust-embedded.org/book/start/hardware.html for better
 details on the running part if you are not sure what each thing is doing
+

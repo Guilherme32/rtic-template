@@ -1,0 +1,13 @@
+[default.general]
+chip = "STM32F401CCUx"
+
+[debug.rtt]
+enabled = true
+channels = [
+    { up = 0, down = 0, name = "main", up_mode = "NoBlockSkip", format = "Defmt" }
+]
+
+[debug.gdb]
+enabled = true
+gdb_connection_string = "localhost:1337"
+

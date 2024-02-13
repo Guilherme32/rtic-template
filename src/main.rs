@@ -1,22 +1,27 @@
 #![no_std]
 #![no_main]
 
-// O semihosting impede o programa de rodar fora do debug do gdb
-#[cfg(debug_assertions)]
-use panic_semihosting as _;
 #[cfg(not(debug_assertions))]
 use panic_halt as _;
+
+#[cfg(debug_assertions)]
+use panic_probe as _;
+
+#[cfg(debug_assertions)]
+use defmt_rtt as _;
 
 use rtic::app;
 
 #[app(device = stm32f4xx_hal::pac, dispatchers = [SPI3])]
 mod app {
+    use stm32f4xx_hal::prelude::*;
+
     #[cfg(debug_assertions)]
-    use cortex_m_semihosting::hprintln;
+    use defmt::{dbg, error, info, warn};
+
+    // Get the fake implementations for empty macros (no rtt) on release
     #[cfg(not(debug_assertions))]
-    macro_rules! hprintln {
-        ( $( $x:expr ), * ) => { () };
-    }
+    use probe_test::{dbg, error, info, warn};
 
     #[shared]
     struct Shared {}
@@ -25,26 +30,25 @@ mod app {
     struct Local {}
 
     #[init]
-    fn init(_: init::Context) -> (Shared, Local, init::Monotonics) {
-        hprintln!("Init");
+    fn init(ctx: init::Context) -> (Shared, Local, init::Monotonics) {
+        info!("Started the template main!");
+        dbg!("Started the template main! (Debug)");
+        warn!("Started the template main! (warn)");
+        error!("Started the template main! (Error)");
 
-        task_1::spawn().unwrap();
-        ( Shared {},Local {}, init::Monotonics() )
+        task_1::spawn(20).unwrap();
+
+        (Shared {}, Local {}, init::Monotonics())
     }
 
     #[task(priority = 1, capacity = 2)]
-    fn task_1(_: task_1::Context) {
-        hprintln!("Got to the task 1");
+    fn task_1(_: task_1::Context, x: i32) {
+        info!("Got to task 1 with parameter ({})", x);
     }
 
     #[idle]
     fn _idle(_: _idle::Context) -> ! {
-        hprintln!("Got to the idle for the first time! (:");
-
-        loop {
-            hprintln!("Going to sleep zzz");
-            rtic::export::wfi();
-        }
+        #[allow(clippy::empty_loop)]
+        loop {}
     }
 }
-
